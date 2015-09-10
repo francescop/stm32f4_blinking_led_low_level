@@ -41,6 +41,9 @@
 #define t_BSRRH       (( uint16_t *) t_GPIOD_BASE + 0x1A)    /*!> GPIO port bit set/reset high register, Address offset: 0x1A      */
 #define t_LCKR        (( uint32_t *) t_GPIOD_BASE + 0x1C)     /*!> GPIO port configuration lock register, Address offset: 0x1C      */
 
+void turnOn();
+void turnOff();
+
 int main() {
 
   int pin = LED_RED;
@@ -76,16 +79,22 @@ int main() {
   //  Toggle the selected LED indefinitely.
   //
   while (1) {
-    *t_GPIOD_BSRR |= (0 << 14);
-    *t_GPIOD_BSRR |= (1 << 30);
-
+    turnOn();
     delay(500);
 
-    *t_GPIOD_BSRR |= (0 << 30);
-    *t_GPIOD_BSRR |= (1 << 14);
-
+    turnOff();
     delay(500);
   }
+}
+
+void turnOn(){
+  *t_GPIOD_BSRR |= (0 << 14);
+  *t_GPIOD_BSRR |= (1 << 30);
+}
+
+void turnOff(){
+  *t_GPIOD_BSRR |= (0 << 30);
+  *t_GPIOD_BSRR |= (1 << 14);
 }
 
 void _init() {
